@@ -25,13 +25,23 @@ function handleCellClick(e) {
 }
 
 function computerMove() {
-    let emptyCells = [];
-    gameState.forEach((val, idx) => { if(val === "") emptyCells.push(idx); });
-    
-    // The "Random Number" logic you asked for
-    let randomIndex = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-    
-    makeMove(randomIndex, "O");
+    // 50% chance to be a genius, 50% to be random
+    const isGenius = Math.random() < 0.5;
+    let moveIndex;
+
+    if (isGenius) {
+        // Use the smart minimax logic
+        moveIndex = getBestMove(gameState); 
+    } else {
+        // Use the random logic you already have
+        let emptyCells = [];
+        gameState.forEach((val, idx) => { if (val === "") emptyCells.push(idx); });
+        moveIndex = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+    }
+
+    if (moveIndex !== undefined) {
+        makeMove(moveIndex, "O");
+    }
 }
 
 function makeMove(index, player) {
