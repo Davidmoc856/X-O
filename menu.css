@@ -7,10 +7,10 @@ body { display: flex;
 .menu-container { text-align: center;
      background: whitesmoke; 
      padding: 60px 40px; 
-     border-radius: 15px; 
+     border-radius: 25px; 
      width: 90%;
-     max-width: 550px;
-     
+     max-width: 500px;
+     text-align: center;
      box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
 .button-group { display: flex; 
     flex-direction: column;
