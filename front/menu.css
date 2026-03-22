@@ -1,0 +1,24 @@
+body { display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+    background-color: rgba(231, 196, 231, 0.822);
+    font-family: sans-serif; }
+.menu-container { text-align: center;
+     background: whitesmoke; 
+     padding: 40px; 
+     border-radius: 15px; 
+     box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+.button-group { display: flex; 
+    flex-direction: column;
+     gap: 20px;
+      margin-top: 30px; }
+.menu-btn { text-decoration: none;
+     background: #007AFF;
+      color: white; 
+      padding: 15px 30px; 
+      border-radius: 8px;
+       font-weight: bold;
+        transition: 0.3s; }
+.menu-btn:hover { background: #0056b3; 
+    transform: translateY(-3px); }

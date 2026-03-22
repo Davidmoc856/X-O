@@ -1,0 +1,76 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    background-color: rgba(231, 196, 231, 0.822);
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    width: 90vw; /* Responsive width */
+    max-width: 300px; /* Limits size on desktop */
+    margin: 20px 0;
+}
+
+.cell {
+    aspect-ratio: 1 / 1; /* Keeps cells square */
+    background: whitesmoke;
+    /*border: 2px solid whitesmoke;*/
+    border-radius: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1); 
+}
+
+.cell:hover { background: #e0e0e0; }
+
+/* Styling the Restart Button */
+#restart {
+    margin-top: 20px;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: white;
+    background-color: #007AFF; /* Nice "Apple" blue */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition:  0.3s ease, transform 0.2s active;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#restart:hover {
+    background-color: #072a50;
+}
+
+#restart:active {
+    transform: scale(0.95); /* Shrinks slightly when clicked */
+}
+
+/* Styling the Status Text (Who's winning) */
+#status {
+    margin-top: 20px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    min-height: 30px; /* Keeps the button from jumping up and down */
+    transition: all 0.3s ease;
+}
+
+.menu-btn { text-decoration: none;
+     background: #007AFF;
+      color: white; 
+      padding: 15px 30px; 
+      border-radius: 8px;
+       font-weight: bold;
+        transition: 0.3s; }
+.menu-btn:hover { background: #0056b3; 
+    transform: translateY(-3px); }

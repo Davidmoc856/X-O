@@ -1,0 +1,27 @@
+# Python environment
+.venv/
+venv/
+ENV/
+__pycache__/
+*.py[cod]
+
+# IDE and Project files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# Compiled C++ files
+*.exe
+*.o
+*.out
+debug/
+release/
+
+# OS generated files
+Thumbs.db
+desktop.ini
+.DS_Store
