@@ -25,15 +25,13 @@ function handleCellClick(e) {
 }
 
 function computerMove() {
-    // 75% chance to be a genius, 25% to be random
-    const isGenius = Math.random() < 0.75; 
+    // 95% God Mode, 5% Human Error
+    const isGenius = Math.random() < 0.95; 
     let moveIndex;
 
     if (isGenius) {
-        // Use the smart minimax logic (The "Brain")
         moveIndex = getBestMove(gameState); 
     } else {
-        // The "Sloppy" side: Pick a random empty spot
         let emptyCells = [];
         gameState.forEach((val, idx) => { if (val === "") emptyCells.push(idx); });
         moveIndex = emptyCells[Math.floor(Math.random() * emptyCells.length)];
@@ -121,7 +119,6 @@ function minimax(board, depth, isMaximizing) {
 }
 
 function checkWinnerForMinimax(board, player) {
-    return winConditions.some(condition => {
-        return condition.every(index => board[index] === player);
-    });
+    const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+    return wins.some(cond => cond.every(idx => board[idx] === player));
 }
