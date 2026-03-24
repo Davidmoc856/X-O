@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplayer Lobby</title>
+    <link rel="stylesheet" href="gam.css">
+</head>
+<body>
+
+    <div class="menu-container">
+        <h1>Multiplayer Mode</h1>
+        
+        <div id="lobby">
+            <button id="createRoom" class="menu-btn">Create Private Room</button>
+            
+            <div class="divider">OR</div>
+            
+            <input type="text" id="roomInput" placeholder="Room Code" maxlength="4">
+            <div class="button-group">
+            <button id="joinRoom" class="menu-btn">Join Room</button>
+             <a href="welcome.html" class="menu-btn">Back</a>
+             </div>
+        </div>
+
+       <div id="game-status" style="display:none;">
+    <div class="status-card">
+        <p class="status-label">Your Room Code</p>
+        <h2 id="displayRoomCode">8989</h2> <div class="loader"></div>
+        <p id="waitingMessage">Waiting for opponent...</p>
+    </div>
+    
+    <div class="button-group">
+        <button id="cancelBtn" class="menu-btn back">Cancel</button>
+    </div>
+
+    </div>
+   
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    
+    <script src="script.js"></script>
+</body>
+
+</body>
+</html>
