@@ -1,32 +1,37 @@
-// Connect to your Node server running on Port 3000
 const socket = io("http://localhost:3000");
 
-// Check if we are connected to the server
-socket.on("connect", () => {
-    console.log("Browser connected to Server! ID:", socket.id);
+// 1. CREATE ROOM LOGIC
+document.getElementById("createRoom").addEventListener("click", () => {
+    socket.emit("createRoom");
 });
 
-// Select your 'Create Private Room' button using the ID from your HTML
-const createBtn = document.getElementById("createRoom");
-
-if (createBtn) {
-    createBtn.addEventListener("click", () => {
-        console.log("Button clicked: Sending 'createRoom' event to server...");
-        socket.emit("createRoom");
-    });
-}
-
-// When the server generates the room code, show it in your HTML
 socket.on("roomCreated", (roomCode) => {
-    console.log("Room created! Code:", roomCode);
-    
-    // This updates the <h2> in your 'status-card' div
-    const codeDisplay = document.getElementById("displayRoomCode");
-    const statusCard = document.getElementById("game-status");
+    document.getElementById("displayRoomCode").innerText = roomCode;
+    document.getElementById("game-status").style.display = "block";
+    document.getElementById("lobby").style.display = "none";
+});
 
-    if (codeDisplay && statusCard) {
-        codeDisplay.innerText = roomCode;
-        statusCard.style.display = "block"; // Make the card visible
-        document.getElementById("lobby").style.display = "none"; // Hide the buttons
+// 2. JOIN ROOM LOGIC
+document.getElementById("joinRoom").addEventListener("click", () => {
+    const code = document.getElementById("roomInput").value; // Gets the 4 digits you typed
+    if (code.length === 4) {
+        socket.emit("joinRoom", code);
+        console.log("Attempting to join room:", code);
+    } else {
+        alert("Please enter a valid 4-digit code");
     }
+});
+
+// 3. CANCEL BUTTON LOGIC
+document.getElementById("cancelBtn").addEventListener("click", () => {
+    // This just refreshes the page to take you back to the main menu
+    window.location.reload(); 
+});
+
+// 4. LISTEN FOR GAME START
+socket.on("gameStart", (data) => {
+    console.log("Opponent found! Room:", data.roomCode);
+    
+    // This is the magic line that moves everyone to the game board
+    window.location.href = `bor.html?room=${data.roomCode}`; 
 });

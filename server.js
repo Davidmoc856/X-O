@@ -5,6 +5,19 @@ const io = require("socket.io")(3000, {
     }
 });
 
+function checkWinner(board) {
+    const lines = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+        [0, 3, 6], [1, 4, 7], [2, 5, 8], // Cols
+        [0, 4, 8], [2, 4, 6]             // Diagonals
+    ];
+    for (let line of lines) {
+        const [a, b, c] = line;
+        if (board[a] && board[a] === board[b] && board[a] === board[c]) return board[a];
+    }
+    return board.includes(null) ? null : "draw";
+}
+
 const rooms = {};
 
 io.on("connection", (socket) => {
@@ -63,16 +76,22 @@ io.on("connection", (socket) => {
 
     // --- 3. BOARD: HANDLING MOVES ---
     socket.on("makeMove", (data) => {
-        // data contains: { roomCode, index, symbol }
         const room = rooms[data.roomCode];
-        
         if (room) {
-            // Broadcast the move to the OTHER player in the room
+            room.board[data.index] = data.symbol; // Save the move on server
+            
+            // Send move to the OTHER player
             socket.to(data.roomCode).emit("moveMade", {
                 index: data.index,
                 symbol: data.symbol
             });
-            console.log(`Move in ${data.roomCode}: ${data.symbol} at ${data.index}`);
+
+            // CHECK FOR WINNER
+            const result = checkWinner(room.board);
+            if (result) {
+                io.to(data.roomCode).emit("gameOver", result);
+                delete rooms[data.roomCode]; // Clear room when finished
+            }
         }
     });
 

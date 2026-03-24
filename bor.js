@@ -1,90 +1,72 @@
-/* global io */
 const socket = io("http://localhost:3000");
 
 // 1. Get Room Code from the URL
 const urlParams = new URLSearchParams(window.location.search);
 const roomCode = urlParams.get('room');
 
-// These start empty and get filled when the server says "Go!"
-let mySymbol = "";
+const messageDisplay = document.getElementById("turn-display");
+const roomSpan = document.getElementById("room-id");
+
+let mySymbol = ""; 
 let isMyTurn = false;
 
-// 2. Join the specific room as soon as the page loads
+// 2. Setup Connection
 if (roomCode) {
-    socket.emit("joinRoom", roomCode);
+    if (roomSpan) roomSpan.innerText = roomCode;
+    socket.emit("joinRoom", roomCode); 
+} else {
+    alert("No room code found! Going back to lobby.");
+    window.location.href = "gameroom.html";
 }
 
-// 3. LISTEN for the server to start the game
+// 3. Listen for Game Start (Wait for 2nd player)
 socket.on("gameStart", (data) => {
-    mySymbol = data.symbol;   // The server tells you if you are 'X' or 'O'
-    isMyTurn = data.yourTurn; // The server tells you if it's your turn to move
+    mySymbol = data.symbol;
+    isMyTurn = data.yourTurn; // Get turn status directly from server
     
-    document.getElementById('room-id').innerText = data.roomCode;
-    document.getElementById('turn-display').innerText = isMyTurn ? `Your Turn (${mySymbol}) `: `Opponent's Turn (${mySymbol === 'X' ? 'O' : 'X'})`;
+    // Using proper backticks (the key next to '1')
+    messageDisplay.innerText = `You are ${mySymbol}. ${isMyTurn ? "Your Turn!" : "Waiting for opponent..."}`;
 });
 
-// 4. Handle Board Clicks
-const cells = document.querySelectorAll('.cell');
-cells.forEach((cell, index) => {
-    cell.onclick = () => {
-        // Only allow a click if it's your turn AND the cell is empty
+// 4. Handle Clicks on the Grid
+document.querySelectorAll(".cell").forEach((cell) => {
+    cell.addEventListener("click", () => {
+        const index = cell.id; // Gets "0", "1", etc. from your HTML IDs
+        
         if (isMyTurn && cell.innerText === "") {
+            // Update local UI immediately
             cell.innerText = mySymbol;
-            cell.classList.add(mySymbol.toLowerCase());
-            
-            // Send the move to the server
-            socket.emit("makeMove", {
-                roomCode: roomCode,
-                index: index,
-                symbol: mySymbol
-            });
-            
-            // Switch turn locally so you can't click twice
             isMyTurn = false;
-            document.getElementById('turn-display').innerText = "Opponent's Turn...";
-        }
-    };
-});
-
-// 5. Receive Moves from your opponent
-socket.on("moveMade", (data) => {
-    const cell = cells[data.index];
-    cell.innerText = data.symbol;
-    cell.classList.add(data.symbol.toLowerCase());
-    
-    // Now it's your turn!
-    isMyTurn = true;
-    document.getElementById('turn-display').innerText = `Your Turn (${mySymbol})`;
-});
-
-// Handle errors
-socket.on("error", (msg) => {
-    alert(msg);
-});
-function checkWinner() {
-    const cells = document.querySelectorAll('.cell');
-    const winPatterns = [
-        [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
-        [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
-        [0, 4, 8], [2, 4, 6]             // Diagonals
-    ];
-
-    for (let pattern of winPatterns) {
-        const [a, b, c] = pattern;
-        if (cells[a].innerText && 
-            cells[a].innerText === cells[b].innerText && 
-            cells[a].innerText === cells[c].innerText) {
+            messageDisplay.innerText = "Waiting for opponent...";
             
-            alert(`Player ${cells[a].innerText} Wins!`);
-            window.location.href = 'gameroom.html'; // Send back to lobby
-            return true;
+            // Send to server
+            socket.emit("makeMove", { 
+                roomCode: roomCode, 
+                index: index, 
+                symbol: mySymbol 
+            });
         }
+    });
+});
+
+// 5. Listen for Opponent's Move
+socket.on("moveMade", (data) => {
+    const opponentCell = document.getElementById(data.index);
+    if (opponentCell) {
+        opponentCell.innerText = data.symbol;
+        isMyTurn = true;
+        messageDisplay.innerText = "Your Turn!";
     }
-    
-    // Check for Draw
-    const isDraw = [...cells].every(cell => cell.innerText !== "");
-    if (isDraw) {
-        alert("It's a Draw!");
-        window.location.href = 'gameroom.html';
-    }
-}
+});
+
+// 6. Handle Game Over
+socket.on("gameOver", (winner) => {
+    setTimeout(() => {
+        if (winner === "draw") {
+            alert("It's a tie!");
+        } else {
+            alert(`Player ${winner} wins the match!`);
+        }
+        window.location.href = "gameroom.html";
+    }, 100);
+});
