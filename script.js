@@ -13,25 +13,22 @@ socket.on("roomCreated", (roomCode) => {
 
 // 2. JOIN ROOM LOGIC
 document.getElementById("joinRoom").addEventListener("click", () => {
-    const code = document.getElementById("roomInput").value; // Gets the 4 digits you typed
+    const code = document.getElementById("roomInput").value; 
     if (code.length === 4) {
         socket.emit("joinRoom", code);
-        console.log("Attempting to join room:", code);
     } else {
         alert("Please enter a valid 4-digit code");
     }
 });
 
-// 3. CANCEL BUTTON LOGIC
-document.getElementById("cancelBtn").addEventListener("click", () => {
-    // This just refreshes the page to take you back to the main menu
-    window.location.reload(); 
-});
-
-// 4. LISTEN FOR GAME START
+// 3. LISTEN FOR GAME START (This is the critical fix)
+// This is for the HOST who is still waiting in the lobby
 socket.on("gameStart", (data) => {
-    console.log("Opponent found! Room:", data.roomCode);
+    console.log("Opponent joined! Jumping to board...");
     
-    // This is the magic line that moves everyone to the game board
+    // We use data.roomCode which we just added to the server
     window.location.href = `bor.html?room=${data.roomCode}`; 
+});
+document.getElementById("cancelBtn").addEventListener("click", () => {
+    window.location.reload(); 
 });
