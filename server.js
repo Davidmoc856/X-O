@@ -18,7 +18,20 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
     console.log('a user connected');
+    
+
+    socket.on('createRoom', () => {
+        // Generate a simple 4-digit code
+        const roomCode = Math.floor(1000 + Math.random() * 9000).toString();
+        
+        socket.join(roomCode); // Put this player in the room
+        socket.emit('roomCreated', roomCode); // Send the code back to them
+        console.log(`Room created: ${roomCode}`);
+    });
+
+    // ... rest of your socket logic ...
 });
+
 // ... keep your socket.on logic here ...
 
 // 4. Update this line to use 'server'
