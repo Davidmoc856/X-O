@@ -1,5 +1,7 @@
-const io = require("socket.io")(3000, { cors: { origin: "*" } });
-const rooms = {};
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
 
 // Function to check for a win 
 function checkWinner(board) {

@@ -1,4 +1,7 @@
-const socket = io("http://localhost:3000");
+const socket = io();
+//the work is done
+
+
 
 // 1. Get Room Code from URL
 const urlParams = new URLSearchParams(window.location.search);

@@ -1,4 +1,4 @@
-const socket = io("http://localhost:3000");
+const socket = io();
 
 // 1. CREATE ROOM LOGIC
 document.getElementById("createRoom").addEventListener("click", () => {
@@ -10,7 +10,7 @@ socket.on("roomCreated", (roomCode) => {
     document.getElementById("game-status").style.display = "block";
     document.getElementById("lobby").style.display = "none";
     window.location.href = `bor.html?room=${roomCode}`;
-    
+
 });
 
 // 2. JOIN ROOM LOGIC
