@@ -9,10 +9,12 @@ const io = new Server(server); // 3. Attach Socket.io to that server
 
 const PORT = process.env.PORT || 3000;
 
-app.use(express.static(path.join(__dirname, 'public'))); 
+app.use(express.static(__dirname)); 
 // Make sure your HTML/JS files are in a folder named 'public' 
 // OR just use app.use(express.static(__dirname)); if they are in the root.
-
+io.on('connection', (socket) => {
+    console.log('a user connected');
+});
 // ... keep your socket.on logic here ...
 
 // 4. Update this line to use 'server'
