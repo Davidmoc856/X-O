@@ -1,17 +1,18 @@
-const socket = io();
- const createRoomBtn = document.getElementById("createRoom");
-// 1. CREATE ROOM LOGIC
-// At the top of your file, make sure socket is connected
+document.addEventListener('DOMContentLoaded', () => {
+    const socket = io();
+    const createRoomBtn = document.getElementById("createRoom");
 
-// When they click "Create Private Room"
-createRoomBtn.addEventListener('click', () => {
-    socket.emit('createRoom'); // This sends a message to the server
-});
+    if (createRoomBtn) {
+        createRoomBtn.addEventListener('click', () => {
+            console.log("create room button clicked")
+            socket.emit('createRoom');
+        });
+    }
 
-// Wait for the server to send the code back
-socket.on('roomCreated', (roomCode) => {
-    // Save the room code and move to the game page
-    window.location.href = `bor.html?room=${roomCode}`;
+    socket.on('roomCreated', (roomCode) => {
+        console.log(`Room created! redirecting to code: ${roomCode}`);
+        window.location.href = `bor.html?room=${roomCode}`;
+    });
 });
 
 // 2. JOIN ROOM LOGIC
