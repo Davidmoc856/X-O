@@ -1,4 +1,21 @@
+const express = require('express');
+const http = require('http'); // 1. Add this line
+const { Server } = require('socket.io');
+const path = require('path');
+
+const app = express();
+const server = http.createServer(app); // 2. Create the server using your app
+const io = new Server(server); // 3. Attach Socket.io to that server
+
 const PORT = process.env.PORT || 3000;
+
+app.use(express.static(path.join(__dirname, 'public'))); 
+// Make sure your HTML/JS files are in a folder named 'public' 
+// OR just use app.use(express.static(__dirname)); if they are in the root.
+
+// ... keep your socket.on logic here ...
+
+// 4. Update this line to use 'server'
 server.listen(PORT, '0.0.0.0', () => {
     console.log(`Server is running on port ${PORT}`);
 });
