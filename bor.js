@@ -6,7 +6,7 @@ const socket = io();
 // 1. Get Room Code from URL
 const urlParams = new URLSearchParams(window.location.search);
 const roomCode = urlParams.get('room');
-URLSearchParams(window.location.search);
+//URLSearchParams(window.location.search);
 if (roomCode){
     socket.emit('joinRoom', roomCode);
 }
