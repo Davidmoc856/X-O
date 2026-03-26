@@ -7,7 +7,7 @@ const app = express();
 const server = http.createServer(app); // 2. Create the server using your app
 const io = new Server(server); // 3. Attach Socket.io to that server
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 
 app.use(express.static(__dirname)); 
 // Make sure your HTML/JS files are in a folder named 'public' 
