@@ -38,22 +38,28 @@ socket.on("opponentJoined", () => {
     messageDisplay.innerText = "You are X. Your Turn!";
     isMyTurn = true;
 });
-
 // 5. Handle the Clicks
-cells.forEach((cell) => {
+cells.forEach((cell, index) => {
     cell.addEventListener("click", () => {
+        // Only allow a move if it's your turn AND the cell is empty
         if (isMyTurn && cell.innerText === "") {
             cell.innerText = mySymbol;
             isMyTurn = false;
             messageDisplay.innerText = "Waiting for opponent...";
-            socket.emit("makeMove", { roomCode, index: cell.id, symbol: mySymbol });
+            
+            // Send the move to the server
+            socket.emit("makeMove", { 
+                roomCode: roomCode, 
+                index: index, 
+                symbol: mySymbol 
+            });
         }
     });
 });
 
 // 6. Receive Opponent's Move
 socket.on("moveMade", (data) => {
-    const targetCell = document.getElementById(data.index);
+    const targetCell = cells[data.index];
     if (targetCell) {
         targetCell.innerText = data.symbol;
         isMyTurn = true;
@@ -62,7 +68,49 @@ socket.on("moveMade", (data) => {
 });
 
 // 7. Handle Game Over
-socket.on("gameOver", (winner) => {
-    alert(winner === "draw" ? "It's a tie!" : "Player " + winner + " wins!");
+const modal = document.getElementById("game-over-modal");
+const resultText = document.getElementById("result-text");
+
+// Listen for the winner signal from the server
+socket.on("gameOver", (result) => {
+    modal.style.display = "flex"; // Show the popup
+    
+    if (result === "draw") {
+        resultText.innerText = "It's a Draw! 🤝";
+    } else {
+        resultText.innerText = (result === mySymbol) ? "You Won! 🎉" : "You Lost... 💀";
+    }
+});
+
+// "Play Again" Button
+document.getElementById("rematch-btn").onclick = () => {
+    socket.emit("requestRematch", roomCode);
+};
+
+// "Exit" Button
+document.getElementById("exit-btn").onclick = () => {
     window.location.href = "gameroom.html";
+};
+
+// Handle the board clearing
+socket.on("resetBoard", () => {
+    // 1. Hide the winner popup
+    document.getElementById("game-over-modal").style.display = "none";
+
+    // 2. Clear all the X and O visuals from the grid
+    cells.forEach(cell => {
+        cell.innerText = "";
+    });
+
+    // 3. CRITICAL: Reset the Turn Logic
+    // X always starts first.
+    if (mySymbol === "X") {
+        isMyTurn = true;
+        messageDisplay.innerText = "Your Turn! (X)";
+    } else {
+        isMyTurn = false;
+        messageDisplay.innerText = "Waiting for X to move... (O)";
+    }
+    
+    console.log("Game state reset. My Symbol: " + mySymbol + " | My Turn: " + isMyTurn);
 });

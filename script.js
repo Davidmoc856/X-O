@@ -9,6 +9,8 @@ socket.on("roomCreated", (roomCode) => {
     document.getElementById("displayRoomCode").innerText = roomCode;
     document.getElementById("game-status").style.display = "block";
     document.getElementById("lobby").style.display = "none";
+    window.location.href = `bor.html?room=${roomCode}`;
+    
 });
 
 // 2. JOIN ROOM LOGIC

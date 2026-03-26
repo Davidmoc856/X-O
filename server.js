@@ -1,95 +1,89 @@
-const io = require("socket.io")(3000, {
-    cors: {
-        origin: "*",
-        methods: ["GET", "POST"]
-    }
-});
-
-// The "Memory" of your game
+const io = require("socket.io")(3000, { cors: { origin: "*" } });
 const rooms = {};
 
+// Function to check for a win 
 function checkWinner(board) {
     const lines = [
-        [0, 1, 2], [3, 4, 5], [6, 7, 8],
-        [0, 3, 6], [1, 4, 7], [2, 5, 8],
-        [0, 4, 8], [2, 4, 6]
+        [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+        [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+        [0, 4, 8], [2, 4, 6]             // Diagonals
     ];
     for (let line of lines) {
         const [a, b, c] = line;
-        if (board[a] && board[a] === board[b] && board[a] === board[c]) return board[a];
+        if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+            return board[a]; // Returns 'X' or 'O'
+        }
     }
     return board.includes(null) ? null : "draw";
 }
 
-io.on("connection", (socket) => {
-    console.log(`Connection: ${socket.id}`);
 
-    // 1. CREATE ROOM
+
+io.on("connection", (socket) => {
+    console.log("New Connection:", socket.id);
+
+    // FIX 1: Bring back the Create Room button logic
     socket.on("createRoom", () => {
         const roomCode = Math.floor(1000 + Math.random() * 9000).toString();
-        rooms[roomCode] = {
-            players: [], // Start empty, will fill when they land on bor.html
-            board: Array(9).fill(null)
-        };
-        socket.emit("roomCreated", roomCode);
+        rooms[roomCode] = { players: [], board: Array(9).fill(null) };
+        socket.emit("roomCreated", roomCode); // Sends code back to script.js
         console.log(`Room ${roomCode} created.`);
     });
 
-    // 2. JOIN ROOM (The logic that makes it responsive)
     socket.on("joinRoom", (roomCode) => {
-    const room = rooms[roomCode];
-
-    if (room) {
-        socket.join(roomCode);
-
-        // Add the player if they aren't already counted
-        if (!room.players.includes(socket.id) && room.players.length < 2) {
-            room.players.push(socket.id);
-            console.log(`User ${socket.id} added to Room ${roomCode}. Total: ${room.players.length}`);
-        }
-
-        // Send info to the person WHO JUST JOINED immediately
-        const isHost = room.players[0] === socket.id;
-        socket.emit("gameStart", { 
-            symbol: isHost ? "X" : "O", 
-            yourTurn: isHost, 
-            roomCode: roomCode 
-        });
-
-        // If the second player is now here, notify the FIRST player to update their screen
-        if (room.players.length === 2) {
-            console.log(`Room ${roomCode} is full. Starting game!`);
-            io.to(room.players[0]).emit("opponentJoined"); 
-        }
-    } else {
-        socket.emit("error", "Room not found!");
-    }
-});
-    // 3. MAKE MOVE
-    socket.on("makeMove", (data) => {
-        const room = rooms[data.roomCode];
+        const room = rooms[roomCode];
         if (room) {
-            room.board[data.index] = data.symbol;
-            
-            // Broadcast to everyone else in the room
-            socket.to(data.roomCode).emit("moveMade", {
-                index: data.index,
-                symbol: data.symbol
+            socket.join(roomCode);
+            if (room.players.length < 2 && !room.players.includes(socket.id)) {
+                room.players.push(socket.id);
+            }
+
+            const isHost = room.players[0] === socket.id;
+            socket.emit("gameStart", {
+                symbol: isHost ? "X" : "O",
+                yourTurn: isHost,
+                roomCode: roomCode
             });
 
-            const result = checkWinner(room.board);
-            if (result) {
-                io.to(data.roomCode).emit("gameOver", result);
-                delete rooms[data.roomCode]; 
+            if (room.players.length === 2) {
+                io.to(room.players[0]).emit("opponentJoined");
             }
+        } else {
+            socket.emit("error", "Room not found! Please create one first.");
         }
     });
 
-    socket.on("disconnect", () => {
-        console.log(`Disconnected: ${socket.id}`);
-    });
-});
+    
+socket.on("makeMove", (data) => {
+    const room = rooms[data.roomCode];
+    if (room) {
+        // Update the server's version of the board
+        room.board[data.index] = data.symbol;
 
-console.log("-----------------------------------------");
-console.log("Tic-Tac-Toe Server: STANDBY on Port 3000");
-console.log("-----------------------------------------");
+        // Broadcast the move to the other player
+        socket.to(data.roomCode).emit("moveMade", data);
+
+        // Check for a winner
+        const result = checkWinner(room.board);
+        if (result) {
+            console.log(`Game Over in Room ${data.roomCode}: ${result}`);
+            // Tell EVERYONE in the room who won
+            io.to(data.roomCode).emit("gameOver", result);
+            
+            // Clean up the room after a few seconds so it can be reused
+           // setTimeout(() => { delete rooms[data.roomCode]; }, 5000);
+        }
+    }
+});
+socket.on("requestRematch", (roomCode) => {
+    const room = rooms[roomCode];
+    if (room) {
+        room.board = Array(9).fill(null); // Wipe server board
+        
+        // IMPORTANT: Tell BOTH players to reset and who starts
+        // We broadcast to everyone in the room
+        io.to(roomCode).emit("resetBoard"); 
+        console.log(`Room ${roomCode} board has been cleared for rematch.`);
+    }
+});
+});
