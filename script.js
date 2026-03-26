@@ -1,5 +1,5 @@
 const socket = io();
-
+ const createRoomBtn = document.getElementById("createRoom");
 // 1. CREATE ROOM LOGIC
 // At the top of your file, make sure socket is connected
 
