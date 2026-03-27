@@ -61,12 +61,19 @@ cells.forEach((cell, index) => {
 });
 
 // 6. Receive Opponent's Move
-socket.on("moveMade", (data) => {
+socket.on('moveMade', (data) => {
+    console.log("Opponent moved at index:", data.index);
+
     const targetCell = cells[data.index];
     if (targetCell) {
+        // 1. Update the UI board with the opponent's symbol
         targetCell.innerText = data.symbol;
+
+        // 2. Switch the turn so the current player can now play
         isMyTurn = true;
-        messageDisplay.innerText = "Your Turn!";
+        
+        // 3. Update the text on screen so they know!
+        messageDisplay.innerText = "Your Turn!"; 
     }
 });
 

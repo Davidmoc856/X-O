@@ -91,7 +91,10 @@ io.on("connection", (socket) => {
             room.board[data.index] = data.symbol;
 
             // Broadcast the move to the other player
-            socket.to(data.roomCode).emit("moveMade", data);
+            socket.to(data.roomCode).emit("moveMade", {
+                index: data.index,
+                symbol: data.symbol
+            });
 
             // Check for a winner
             const result = checkWinner(room.board);
