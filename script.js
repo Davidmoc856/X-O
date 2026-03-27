@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Setup the connection and buttons
-    const socket = io(); 
+    const socket = io();
     const createRoomBtn = document.getElementById("createRoom");
     const joinRoomBtn = document.getElementById("joinRoom");
     const roomInput = document.getElementById("roomInput");
@@ -32,6 +32,16 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('roomCreated', (roomCode) => {
         console.log("Room Success! Redirecting...");
         window.location.href = `bor.html?room=${roomCode}`;
+    });
+
+    // This tells the "Joiner" to move to the game page once the server confirms they joined
+    socket.on('joinSuccess', (roomCode) => {
+        console.log("Joined successfully! Moving to game...");
+        window.location.href = `bor.html?room=${roomCode}`;
+    });
+
+    socket.on('error', (message) => {
+        alert(message); // Tells them if the room code was wrong
     });
 
 }); // <--- THIS bracket must be at the very bottom of the file

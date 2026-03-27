@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 10000;
 
 const rooms = {}; // State management for active game rooms
 
-app.use(express.static(__dirname)); 
+app.use(express.static(__dirname));
 // Make sure your HTML/JS files are in a folder named 'public' 
 // OR just use app.use(express.static(__dirname)); if they are in the root.
 app.get('/', (req, res) => {
@@ -52,10 +52,18 @@ io.on("connection", (socket) => {
         console.log(`Room ${roomCode} created.`);
     });
 
-    socket.on("joinRoom", (roomCode) => {
+    socket.on('joinRoom', (roomCode) => {
+        // Use our rooms object to check if the game exists, not just socket io adapter
         const room = rooms[roomCode];
+
         if (room) {
-            socket.join(roomCode);
+            socket.join(roomCode); // This puts them in the same "room"
+            console.log(`User joined room: ${roomCode}`);
+
+            // Tell ONLY this user they successfully joined so they can redirect (for script.js)
+            socket.emit('joinSuccess', roomCode);
+
+            // Game Logic: Add them as a player if space is available
             if (room.players.length < 2 && !room.players.includes(socket.id)) {
                 room.players.push(socket.id);
             }
@@ -68,44 +76,44 @@ io.on("connection", (socket) => {
             });
 
             if (room.players.length === 2) {
+                // Let the first player know the second player has actually joined
                 io.to(room.players[0]).emit("opponentJoined");
             }
         } else {
-            socket.emit("error", "Room not found! Please create one first.");
+            socket.emit('error', 'Room not found!');
         }
     });
 
-    
-socket.on("makeMove", (data) => {
-    const room = rooms[data.roomCode];
-    if (room) {
-        // Update the server's version of the board
-        room.board[data.index] = data.symbol;
+    socket.on("makeMove", (data) => {
+        const room = rooms[data.roomCode];
+        if (room) {
+            // Update the server's version of the board
+            room.board[data.index] = data.symbol;
 
-        // Broadcast the move to the other player
-        socket.to(data.roomCode).emit("moveMade", data);
+            // Broadcast the move to the other player
+            socket.to(data.roomCode).emit("moveMade", data);
 
-        // Check for a winner
-        const result = checkWinner(room.board);
-        if (result) {
-            console.log(`Game Over in Room ${data.roomCode}: ${result}`);
-            // Tell EVERYONE in the room who won
-            io.to(data.roomCode).emit("gameOver", result);
-            
-            // Clean up the room after a few seconds so it can be reused
-           // setTimeout(() => { delete rooms[data.roomCode]; }, 5000);
+            // Check for a winner
+            const result = checkWinner(room.board);
+            if (result) {
+                console.log(`Game Over in Room ${data.roomCode}: ${result}`);
+                // Tell EVERYONE in the room who won
+                io.to(data.roomCode).emit("gameOver", result);
+
+                // Clean up the room after a few seconds so it can be reused
+                // setTimeout(() => { delete rooms[data.roomCode]; }, 5000);
+            }
         }
-    }
-});
-socket.on("requestRematch", (roomCode) => {
-    const room = rooms[roomCode];
-    if (room) {
-        room.board = Array(9).fill(null); // Wipe server board
-        
-        // IMPORTANT: Tell BOTH players to reset and who starts
-        // We broadcast to everyone in the room
-        io.to(roomCode).emit("resetBoard"); 
-        console.log(`Room ${roomCode} board has been cleared for rematch.`);
-    }
-});
+    });
+    socket.on("requestRematch", (roomCode) => {
+        const room = rooms[roomCode];
+        if (room) {
+            room.board = Array(9).fill(null); // Wipe server board
+
+            // IMPORTANT: Tell BOTH players to reset and who starts
+            // We broadcast to everyone in the room
+            io.to(roomCode).emit("resetBoard");
+            console.log(`Room ${roomCode} board has been cleared for rematch.`);
+        }
+    });
 });
