@@ -1,38 +1,37 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const socket = io();
+    // 1. Setup the connection and buttons
+    const socket = io(); 
     const createRoomBtn = document.getElementById("createRoom");
+    const joinRoomBtn = document.getElementById("joinRoom");
+    const roomInput = document.getElementById("roomInput");
 
+    console.log("DOM Loaded - Socket Initialized");
+
+    // 2. CREATE ROOM LOGIC
     if (createRoomBtn) {
         createRoomBtn.addEventListener('click', () => {
-            console.log("create room button clicked")
+            console.log("Emitting createRoom...");
             socket.emit('createRoom');
         });
     }
 
+    // 3. JOIN ROOM LOGIC (Now safely inside the bubble)
+    if (joinRoomBtn) {
+        joinRoomBtn.addEventListener('click', () => {
+            const code = roomInput.value.trim();
+            if (code.length === 4) {
+                console.log("Emitting joinRoom for code:", code);
+                socket.emit('joinRoom', code);
+            } else {
+                alert("Please enter a valid 4-digit code");
+            }
+        });
+    }
+
+    // 4. SERVER RESPONSES
     socket.on('roomCreated', (roomCode) => {
-        console.log(`Room created! redirecting to code: ${roomCode}`);
+        console.log("Room Success! Redirecting...");
         window.location.href = `bor.html?room=${roomCode}`;
     });
-});
 
-// 2. JOIN ROOM LOGIC
-document.getElementById("joinRoom").addEventListener("click", () => {
-    const code = document.getElementById("roomInput").value; 
-    if (code.length === 4) {
-        socket.emit("joinRoom", code);
-    } else {
-        alert("Please enter a valid 4-digit code");
-    }
-});
-
-// 3. LISTEN FOR GAME START (This is the critical fix)
-// This is for the HOST who is still waiting in the lobby
-socket.on("gameStart", (data) => {
-    console.log("Opponent joined! Jumping to board...");
-    
-    // We use data.roomCode which we just added to the server
-    window.location.href = `bor.html?room=${data.roomCode}`; 
-});
-document.getElementById("cancelBtn").addEventListener("click", () => {
-    window.location.reload(); 
-});
+}); // <--- THIS bracket must be at the very bottom of the file
