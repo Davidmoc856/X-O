@@ -9,30 +9,14 @@ const io = new Server(server); // 3. Attach Socket.io to that server
 
 const PORT = process.env.PORT || 10000;
 
+const rooms = {}; // State management for active game rooms
+
 app.use(express.static(__dirname)); 
 // Make sure your HTML/JS files are in a folder named 'public' 
 // OR just use app.use(express.static(__dirname)); if they are in the root.
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'welcome.html'));
 });
-
-io.on('connection', (socket) => {
-    console.log('a user connected');
-    
-
-    socket.on('createRoom', () => {
-        // Generate a simple 4-digit code
-        const roomCode = Math.floor(1000 + Math.random() * 9000).toString();
-        
-        socket.join(roomCode); // Put this player in the room
-        socket.emit('roomCreated', roomCode); // Send the code back to them
-        console.log(`Room created: ${roomCode}`);
-    });
-
-    // ... rest of your socket logic ...
-});
-
-// ... keep your socket.on logic here ...
 
 // 4. Update this line to use 'server'
 server.listen(PORT, '0.0.0.0', () => {

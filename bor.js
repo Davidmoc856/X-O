@@ -6,17 +6,13 @@ const socket = io();
 // 1. Get Room Code from URL
 const urlParams = new URLSearchParams(window.location.search);
 const roomCode = urlParams.get('room');
-//URLSearchParams(window.location.search);
-if (roomCode){
-    socket.emit('joinRoom', roomCode);
-}
 
 // 2. Identify the correct HTML elements
 const messageDisplay = document.getElementById("turn-display"); // Matches your HTML
 const roomSpan = document.getElementById("room-id"); // Matches your HTML
 const cells = document.querySelectorAll(".cell");
 
-let mySymbol = ""; 
+let mySymbol = "";
 let isMyTurn = false;
 
 // 3. Connect to the Room
@@ -33,7 +29,7 @@ socket.on("gameStart", (data) => {
     console.log("GAME START SIGNAL RECEIVED!", data);
     mySymbol = data.symbol;
     isMyTurn = data.yourTurn;
-    
+
     // Using standard quotes to avoid backtick issues
     messageDisplay.innerText = "You are " + mySymbol + ". " + (isMyTurn ? "Your Turn!" : "Waiting for opponent...");
 });
@@ -53,12 +49,12 @@ cells.forEach((cell, index) => {
             cell.innerText = mySymbol;
             isMyTurn = false;
             messageDisplay.innerText = "Waiting for opponent...";
-            
+
             // Send the move to the server
-            socket.emit("makeMove", { 
-                roomCode: roomCode, 
-                index: index, 
-                symbol: mySymbol 
+            socket.emit("makeMove", {
+                roomCode: roomCode,
+                index: index,
+                symbol: mySymbol
             });
         }
     });
@@ -81,7 +77,7 @@ const resultText = document.getElementById("result-text");
 // Listen for the winner signal from the server
 socket.on("gameOver", (result) => {
     modal.style.display = "flex"; // Show the popup
-    
+
     if (result === "draw") {
         resultText.innerText = "It's a Draw! 🤝";
     } else {
@@ -118,6 +114,6 @@ socket.on("resetBoard", () => {
         isMyTurn = false;
         messageDisplay.innerText = "Waiting for X to move... (O)";
     }
-    
+
     console.log("Game state reset. My Symbol: " + mySymbol + " | My Turn: " + isMyTurn);
 });
