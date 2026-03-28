@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cyber RPS - Saint World</title>
+    <link rel="stylesheet" href="saint.css">
+</head>
+<body>
+    <div class="container">
+        <div class="stats-bar">
+            <span>Player: <b id="p-score">0</b></span>
+            <span>AI: <b id="cpu-score">0</b></span>
+        </div>
+        
+        <h1>CYBER<span>-RPS</span></h1>
+
+        <div class="battle-arena">
+            <div class="fighter" id="player-choice">?</div>
+            <div class="vs">VS</div>
+            <div class="fighter" id="cpu-choice">?</div>
+        </div>
+
+        <p id="result-text">SELECT YOUR WEAPON</p>
+
+        <div class="weapon-select">
+            <button onclick="play('ROCK')" class="weapon-btn">✊</button>
+            <button onclick="play('PAPER')" class="weapon-btn">✋</button>
+            <button onclick="play('SCISSORS')" class="weapon-btn">✌️</button>
+        </div>
+
+        <div class="arcade-menu" style="margin-top: 20px;">
+            <button onclick="location.href='saint.html'">Back</button>
+        </div>
+    </div>
+
+    <script src="rps.js"></script>
+</body>
+</html>
