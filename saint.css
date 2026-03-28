@@ -297,6 +297,46 @@ button:active {
     border-radius: 8px;
 }
 
+.controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+}
+
+.control-btn {
+    width: 60px;
+    height: 60px;
+    margin: 5px;
+    background: rgba(0, 210, 255, 0.1);
+    border: 2px solid var(--neon-blue);
+    color: var(--neon-blue);
+    border-radius: 12px;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.control-btn:active {
+    background: var(--neon-blue);
+    color: #000;
+    box-shadow: 0 0 20px var(--neon-blue);
+}
+
+/* Hide on desktop if you want, but keep for now to test */
+@media (min-width: 800px) {
+    /* #mobile-controls { display: none; } */
+}
+
 /* --- Saint Tower Specific Styles --- */
 
 #towerCanvas {

@@ -26,6 +26,19 @@
     </select>
 </div>
 
+<div class="controls" id="mobile-controls">
+    <div class="row">
+        <button class="control-btn" onclick="setDir(0, -1)">▲</button>
+    </div>
+    <div class="row">
+        <button class="control-btn" onclick="setDir(-1, 0)">◀</button>
+        <button class="control-btn" onclick="setDir(1, 0)">▶</button>
+    </div>
+    <div class="row">
+        <button class="control-btn" onclick="setDir(0, 1)">▼</button>
+    </div>
+</div>
+
         <div class="arcade-menu">
             <button onclick="initSnake()" class="btn-primary" id="start-btn">Initialize Stream</button>
              <button onclick="location.href='saint.html'">Back</button>

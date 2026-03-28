@@ -124,3 +124,15 @@ window.addEventListener('keydown', e => {
     if (e.keyCode === 39 && dx !== -1) { dx = 1; dy = 0; }
     if (e.keyCode === 40 && dy !== -1) { dx = 0; dy = 1; }
 });
+
+// Function for Mobile Button Controls
+function setDir(newDx, newDy) {
+    // Prevent the snake from reversing on itself
+    if (newDx === -1 && dx === 1) return;
+    if (newDx === 1 && dx === -1) return;
+    if (newDy === -1 && dy === 1) return;
+    if (newDy === 1 && dy === -1) return;
+
+    dx = newDx;
+    dy = newDy;
+}
