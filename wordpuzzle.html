@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saint World Word Puzzle</title>
+    <link rel="stylesheet" href="word.css">
+</head>
+
+<body>
+    <div class="container puzzle-theme">
+        <div class="stats-bar">
+            <span>Score: <b id="score-val">0</b></span>
+            <span>Time: <b id="timer-val">120</b>s</span>
+        </div>
+
+        <h1>WORD <span>PUZZLE</span></h1>
+
+        <div class="hints-box">
+            <p id="hint-text">Waiting for word...</p>
+            <p class="category" id="category-text">API Fetching...</p>
+        </div>
+
+        <div class="word-box" id="scrambled-word">L O A D I N G</div>
+
+        <input type="text" id="user-input" placeholder="Type answer here..." autocomplete="off">
+
+        <div class="arcade-menu">
+            <button class="btn-primary" onclick="checkGuess()">Submit Guess</button>
+            <button class="btn-secondary" onclick="initGame()">Skip Word</button>
+            <a href="saint.html" class="btn-back">Back to Lobby</a>
+        </div>
+    </div>
+
+    <script src="word.js"></script>
+</body>
+
+</html>

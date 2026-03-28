@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivia Quiz - Saint World</title>
+    <link rel="stylesheet" href="saint.css">
+</head>
+
+<body>
+    <div class="container puzzle-theme">
+        <div class="stats-bar">
+            <span>Score: <b id="score-val">0</b></span>
+            <span>Question: <b id="q-count">1</b>/10</span>
+        </div>
+
+        <h1>TRIVIA <span>QUIZ</span></h1>
+
+        <div class="hints-box">
+            <p id="category-text">Loading Category...</p>
+            <p class="category" id="difficulty-text">Difficulty: ---</p>
+        </div>
+
+        <div class="question-container">
+            <h2 id="question-text">Fetching the best questions for you...</h2>
+        </div>
+
+        <div id="options-container" class="arcade-menu">
+        </div>
+
+        <div class="arcade-menu" style="margin-top: 20px;">
+
+            <button onclick="location.href='saint.html'">Quit game</button>
+        </div>
+    </div>
+
+    <script src="quiz.js"></script>
+</body>
+
+</html>

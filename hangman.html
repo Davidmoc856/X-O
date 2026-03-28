@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangman - Saint World</title>
+    <link rel="stylesheet" href="saint.css">
+</head>
+
+<body>
+    <div class="container puzzle-theme">
+        <div class="stats-bar">
+            <span>Lives: <b id="lives-val">6</b></span>
+            <span>Score: <b id="h-score">0</b></span>
+        </div>
+
+        <h1>HANG<span>MAN</span></h1>
+
+        <div class="visual-box" id="hangman-visual">
+            READY TO OVERRIDE
+        </div>
+
+        <div class="word-display" id="word-blanks">_ _ _ _ _</div>
+
+        <p id="hint-text">Category: Fetching...</p>
+
+        <div id="keyboard" class="keyboard">
+        </div>
+
+        <div class="arcade-menu" style="margin-top: 20px;">
+            <button onclick="initHangman()" class="btn-secondary">New Game</button>
+            <button onclick="location.href='saint.html'">Quit game</button>
+        </div>
+    </div>
+
+    <script src="hangman.js"></script>
+</body>
+
+</html>
