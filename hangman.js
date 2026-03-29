@@ -1,6 +1,6 @@
 let targetWord = "";
 let guessedLetters = [];
-let lives = 6;
+let lives = 10;
 let score = 0;
 
 // Using a different API that provides categories for better hints
@@ -27,7 +27,7 @@ async function fetchHangmanWord() {
 
 
 async function initHangman() {
-    lives = 6;
+    lives = 10;
     guessedLetters = [];
     document.getElementById("lives-val").innerText = lives;
     document.getElementById("hangman-visual").innerText = "SYSTEM SECURE";

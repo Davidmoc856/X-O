@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const http = require('http'); // 1. Add this line
 const { Server } = require('socket.io');
@@ -52,35 +54,27 @@ io.on("connection", (socket) => {
         console.log(`Room ${roomCode} created.`);
     });
 
-    socket.on('joinRoom', (roomCode) => {
-        // Use our rooms object to check if the game exists, not just socket io adapter
-        const room = rooms[roomCode];
-
-        if (room) {
-            socket.join(roomCode); // This puts them in the same "room"
-            console.log(`User joined room: ${roomCode}`);
-
-            // Tell ONLY this user they successfully joined so they can redirect (for script.js)
-            socket.emit('joinSuccess', roomCode);
-
-            // Game Logic: Add them as a player if space is available
-            if (room.players.length < 2 && !room.players.includes(socket.id)) {
-                room.players.push(socket.id);
+    socket.on('joinRoom', (room) => {
+        if (rooms[room]) {
+            const roomObj = rooms[room];
+            socket.join(room);
+            console.log(`User joined room: ${room}`);
+            socket.emit('joinSuccess', room);
+            if (roomObj.players.length < 2 && !roomObj.players.includes(socket.id)) {
+                roomObj.players.push(socket.id);
             }
-
-            const isHost = room.players[0] === socket.id;
+            const isHost = roomObj.players[0] === socket.id;
             socket.emit("gameStart", {
                 symbol: isHost ? "X" : "O",
                 yourTurn: isHost,
-                roomCode: roomCode
+                roomCode: room
             });
-
-            if (room.players.length === 2) {
-                // Let the first player know the second player has actually joined
-                io.to(room.players[0]).emit("opponentJoined");
+            if (roomObj.players.length === 2) {
+                io.to(roomObj.players[0]).emit("opponentJoined");
             }
         } else {
-            socket.emit('error', 'Room not found!');
+            socket.join(room);
+            console.log(`User joined Chess Room: ${room}`);
         }
     });
 
@@ -118,5 +112,9 @@ io.on("connection", (socket) => {
             io.to(roomCode).emit("resetBoard");
             console.log(`Room ${roomCode} board has been cleared for rematch.`);
         }
+    });
+
+    socket.on('chessMove', (data) => {
+        socket.to(data.roomId).emit('chessMove', data);
     });
 });

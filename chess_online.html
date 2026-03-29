@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Saint Chess - Multiplayer</title>
+    <link rel="stylesheet" href="saint.css">
+    <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>SAINT<span>-CHESS</span> ONLINE</h1>
+        <div id="game-info">
+            <p>Status: <span id="status">Connecting...</span></p>
+            <p>Room ID: <span id="room-id">Generating...</span></p>
+        </div>
+        
+        <div id="myBoard" style="width: 400px; margin: auto;"></div>
+
+        <div class="arcade-menu" style="margin-top: 20px;">
+            <button onclick="location.href='chess_meun.html'">Main Menu</button>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://unpkg.com/chess.js@0.10.3/chess.js"></script>
+    <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="chess_online.js"></script>
+</body>
+</html>
