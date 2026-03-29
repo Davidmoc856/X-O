@@ -75,4 +75,29 @@ body {
 .menu-btn:hover { background: #0056b3; 
     transform: translateY(-3px); }
 
+/* Responsive Design */
+@media (max-width: 600px) {
+    .board {
+        width: 95vw;
+        max-width: 280px;
+        gap: 8px;
+    }
+    
+    .cell {
+        font-size: 2rem;
+        border-radius: 25px;
+    }
+    
+    #restart {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+        margin-top: 15px;
+    }
+    
+    #status {
+        font-size: 1.2rem;
+        margin-top: 15px;
+    }
+}
+
 

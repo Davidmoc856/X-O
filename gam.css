@@ -141,3 +141,42 @@ h1 {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .menu-container {
+        padding: 30px 20px;
+        max-width: 90%;
+    }
+    
+    h1 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+    
+    #roomInput {
+        font-size: 1rem;
+        padding: 12px;
+        letter-spacing: 2px;
+    }
+    
+    .menu-btn {
+        padding: 12px;
+        font-size: 0.9rem;
+    }
+    
+    #displayRoomCode {
+        font-size: 2.5rem;
+        letter-spacing: 6px;
+        margin: 15px 0;
+    }
+    
+    .status-label {
+        font-size: 0.7rem;
+    }
+    
+    .loader {
+        width: 25px;
+        height: 25px;
+    }
+}

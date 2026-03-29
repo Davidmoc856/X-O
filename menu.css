@@ -25,3 +25,22 @@ body { display: flex;
         transition: 0.3s; }
 .menu-btn:hover { background: #0056b3; 
     transform: translateY(-3px); }
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .menu-container {
+        padding: 40px 20px;
+        width: 95%;
+        max-width: 400px;
+    }
+    
+    .button-group {
+        gap: 15px;
+        margin-top: 20px;
+    }
+    
+    .menu-btn {
+        padding: 12px 20px;
+        font-size: 0.9rem;
+    }
+}

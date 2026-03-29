@@ -59,3 +59,28 @@ body {
 /* X is Blue, O is Red */
 .cell.x { color: #007AFF; }
 .cell.o { color: #FF3B30; }
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .board {
+        grid-template-columns: repeat(3, 80px);
+        grid-template-rows: repeat(3, 80px);
+        gap: 8px;
+    }
+    
+    .cell {
+        width: 80px;
+        height: 80px;
+        font-size: 2rem;
+        border-radius: 20px;
+    }
+    
+    .status-info {
+        padding: 10px 20px;
+        margin-bottom: 15px;
+    }
+    
+    #turn-display {
+        font-size: 1rem;
+    }
+}
