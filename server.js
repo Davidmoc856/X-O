@@ -73,8 +73,22 @@ io.on("connection", (socket) => {
                 io.to(roomObj.players[0]).emit("opponentJoined");
             }
         } else {
+            // Chess room
+            if (!rooms[room]) {
+                rooms[room] = { players: [], game: 'chess' };
+            }
+            const roomObj = rooms[room];
             socket.join(room);
             console.log(`User joined Chess Room: ${room}`);
+            socket.emit('joinSuccess', room);
+            if (roomObj.players.length < 2 && !roomObj.players.includes(socket.id)) {
+                roomObj.players.push(socket.id);
+            }
+            if (roomObj.players.length === 1) {
+                socket.emit('waitingForOpponent');
+            } else if (roomObj.players.length === 2) {
+                io.to(room).emit('gameStart');
+            }
         }
     });
 

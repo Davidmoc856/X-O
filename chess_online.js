@@ -9,6 +9,21 @@ document.getElementById('room-id').innerText = roomId;
 
 socket.emit('joinRoom', roomId);
 
+// Listen for join success
+socket.on('joinSuccess', () => {
+    document.getElementById('status').innerText = 'Connected';
+});
+
+// Listen for waiting for opponent
+socket.on('waitingForOpponent', () => {
+    document.getElementById('status').innerText = 'Waiting for opponent';
+});
+
+// Listen for game start
+socket.on('gameStart', () => {
+    document.getElementById('status').innerText = 'Playing';
+});
+
 function onDrop(source, target) {
     var move = game.move({
         from: source,
