@@ -297,45 +297,51 @@ button:active {
     border-radius: 8px;
 }
 
+/* Optimized Mobile D-Pad */
 .controls {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 15px;
+    margin-top: 30px; /* More space from the canvas */
+    gap: 15px; /* Adds vertical space between the rows */
 }
 
 .row {
     display: flex;
     justify-content: center;
+    gap: 60px; /* This pushes the Left and Right buttons apart */
+}
+
+/* Ensure the top and bottom buttons stay centered alone */
+.row:first-child, .row:last-child {
+    gap: 0;
 }
 
 .control-btn {
-    width: 60px;
-    height: 60px;
-    margin: 5px;
-    background: rgba(0, 210, 255, 0.1);
+    width: 75px;  /* Slightly larger for easier tapping */
+    height: 75px;
+    background: rgba(0, 210, 255, 0.05);
     border: 2px solid var(--neon-blue);
     color: var(--neon-blue);
-    border-radius: 12px;
-    font-size: 1.5rem;
+    border-radius: 15px;
+    font-size: 1.8rem;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     user-select: none;
+    transition: all 0.1s ease;
     -webkit-tap-highlight-color: transparent;
 }
 
 .control-btn:active {
     background: var(--neon-blue);
     color: #000;
-    box-shadow: 0 0 20px var(--neon-blue);
+    box-shadow: 0 0 30px var(--neon-blue);
+    transform: scale(0.9); /* Visual feedback that you pressed it */
 }
 
-/* Hide on desktop if you want, but keep for now to test */
-@media (min-width: 800px) {
-    /* #mobile-controls { display: none; } */
-}
+
 
 /* --- Saint Tower Specific Styles --- */
 

@@ -15,7 +15,7 @@ app.use(express.static(__dirname));
 // Make sure your HTML/JS files are in a folder named 'public' 
 // OR just use app.use(express.static(__dirname)); if they are in the root.
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'welcome.html'));
+    res.sendFile(path.join(__dirname, 'tie_meun.html'));
 });
 
 // 4. Update this line to use 'server'
