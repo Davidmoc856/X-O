@@ -13,10 +13,10 @@
 /* --- Base Body & Layout --- */
 body {
     margin: 0;
-    padding: 0;
+    padding: 1dvh 0;
     font-family: 'Montserrat', sans-serif;
     background: radial-gradient(circle, #1a1a2e, #16213e, #0f3460);
-    height: 100vh;
+    height: 100dvh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -28,13 +28,13 @@ body {
 .container {
     background: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(12px);
-    padding: 40px;
+    padding: 3.5dvh 5%;
     border-radius: 20px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     text-align: center;
     box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.8);
-    width: 90%;
-    max-width: 450px;
+    width: min(94%, 32rem);
+    max-height: 96dvh;
 }
 
 h1 {
@@ -169,7 +169,7 @@ button,
 
 /* Input Area */
 .puzzle-theme input {
-    width: 85%;
+    width: 100%;
     padding: 16px;
     background: #111;
     border: 2px solid #0f3460;

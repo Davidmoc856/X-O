@@ -17,6 +17,8 @@
 
     <link rel="stylesheet" href="saint.css">
     <link rel="icon" type="image/png" href="logo.png">
+    <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#ff0055">
 </head>
 <body>
     <div class="container">
@@ -26,9 +28,9 @@
         
         <h1>NEON<span>-SNAKE</span></h1>
 
-        <canvas id="snakeCanvas" width="400" height="400"></canvas>
+        <canvas id="snakeCanvas" aria-label="Neon Snake game board"></canvas>
 
-        <p id="msg">USE ARROW KEYS OR SWIPE TO NAVIGATE</p>
+        <p id="msg">USE ARROW KEYS, SWIPE, OR THE D-PAD TO NAVIGATE</p>
 
         <div class="level-selector" style="margin-bottom: 15px;">
     <label for="speed-select" style="color: var(--neon-blue); margin-right: 10px;">SPEED:</label>
@@ -41,14 +43,14 @@
 
 <div class="controls" id="mobile-controls">
     <div class="row">
-        <button class="control-btn" onclick="setDir(0, -1)">▲</button>
+        <button type="button" class="control-btn" data-dir="up" aria-label="Move up">▲</button>
     </div>
     <div class="row">
-        <button class="control-btn" onclick="setDir(-1, 0)">◀</button>
-        <button class="control-btn" onclick="setDir(1, 0)">▶</button>
+        <button type="button" class="control-btn" data-dir="left" aria-label="Move left">◀</button>
+        <button type="button" class="control-btn" data-dir="right" aria-label="Move right">▶</button>
     </div>
     <div class="row">
-        <button class="control-btn" onclick="setDir(0, 1)">▼</button>
+        <button type="button" class="control-btn" data-dir="down" aria-label="Move down">▼</button>
     </div>
 </div>
 

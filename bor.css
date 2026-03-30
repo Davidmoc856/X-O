@@ -3,10 +3,11 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    min-height: 100dvh;
     background-color: rgba(231, 196, 231, 0.822);
     font-family: sans-serif;
     margin: 0;
+    padding: 3% 4%;
 }
 
 .status-info {
@@ -26,22 +27,17 @@ body {
 
 .board {
     display: grid;
-    grid-template-columns: repeat(3, 100px);
-    grid-template-rows: repeat(3, 100px);
-    gap: 10px;
-    
-    /* padding: 10px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);} */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3%;
+    width: min(92vw, 28rem);
+    aspect-ratio: 1 / 1;
 }
-    
-
 
 .cell {
-    width: 100px;
-    height: 100px;
+    width: 100%;
+    aspect-ratio: 1 / 1;
     background: #f9f9f9;
-    border-radius: 25px;
+    border-radius: 12%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -49,7 +45,7 @@ body {
     font-weight: bold;
     cursor: pointer;
     transition: 0.2s;
-       box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
 .cell:hover {
@@ -63,16 +59,13 @@ body {
 /* Responsive Design */
 @media (max-width: 600px) {
     .board {
-        grid-template-columns: repeat(3, 80px);
-        grid-template-rows: repeat(3, 80px);
-        gap: 8px;
+        width: 96vw;
+        gap: 2.5%;
     }
     
     .cell {
-        width: 80px;
-        height: 80px;
         font-size: 2rem;
-        border-radius: 20px;
+        border-radius: 10%;
     }
     
     .status-info {
