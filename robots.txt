@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://st-tic-tac-toe.onrender.com/sitemap.xml
