@@ -24,7 +24,36 @@
   "orientation": "portrait",
   "categories": ["games", "entertainment"],
   "id": "st-world-arcade-v1",
-   "screenshots":[],
+   "screenshots": [
+  {
+    "src": "home.jpg",
+    "sizes": "1080x1920",
+    "type": "image/png",
+    "form_factor": "narrow",
+    "label": "Saint World Arcade Home"
+  },
+  {
+    "src": "xando.jpg",
+    "sizes": "1080x1920",
+    "type": "image/png",
+    "form_factor": "narrow",
+    "label": "Tic-Tac-Toe Gameplay"
+  },
+  {
+    "src": "chess.jpg",
+    "sizes": "1080x1920",
+    "type": "image/png",
+    "form_factor": "narrow",
+    "label": "Chess Gameplay"
+  },
+  {
+    "src": "quiz.jpg",
+    "sizes": "1080x1920",
+    "type": "image/png",
+    "form_factor": "narrow",
+    "label": "quiz Gameplay"
+  }
+],
   "shortcut_contacts": []
  
 }

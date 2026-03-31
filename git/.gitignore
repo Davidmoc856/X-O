@@ -28,3 +28,6 @@ desktop.ini
 
 # Environment variables
 .env
+
+*.keystore
+*.jks
